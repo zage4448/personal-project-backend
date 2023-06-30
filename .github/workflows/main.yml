@@ -36,6 +36,7 @@ jobs:
             
       - name: Create application.yaml for CD Deploy
         run: |
+          mkdir src/main/resources
           pwd
           echo "${{ secrets.APPLICATION_YAML }}" > src/main/resources/application.yaml
           cat src/main/resources/application.yaml

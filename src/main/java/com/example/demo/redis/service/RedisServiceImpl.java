@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -35,5 +36,10 @@ public class RedisServiceImpl implements RedisService{
         }
 
         return accountId;
+    }
+
+    @Override
+    public void deleteByKey(String userToken) {
+        redisTemplate.delete(userToken);
     }
 }

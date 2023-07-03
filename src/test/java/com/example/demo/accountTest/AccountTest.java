@@ -69,4 +69,24 @@ public class AccountTest {
             assertEquals(email, actualAccount.getEmail());
         }
     }
+
+    @Test
+    @DisplayName("로그아웃 테스트")
+    void LogoutTest () {
+        final String email = "test@test.com";
+        final String password = "test";
+        UUID userToken = UUID.randomUUID();
+
+        AccountLoginRequestForm loginForm = new AccountLoginRequestForm(email, password);
+        Long accountId = accountService.login(loginForm);
+
+        if (accountId != null) {
+            redisService.setKeyAndValue(userToken.toString(), accountId);
+        }
+
+        redisService.deleteByKey(userToken.toString());
+        Long testAccountId = redisService.getValueByKey(userToken.toString());
+
+        assertEquals(null, testAccountId);
+    }
 }

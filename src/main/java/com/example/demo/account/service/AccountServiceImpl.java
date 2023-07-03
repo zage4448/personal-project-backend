@@ -1,5 +1,6 @@
 package com.example.demo.account.service;
 
+import com.example.demo.account.controller.form.AccountLoginRequestForm;
 import com.example.demo.account.controller.form.AccountRegisterForm;
 import com.example.demo.account.entity.Account;
 import com.example.demo.account.repository.AccountRepository;
@@ -44,5 +45,32 @@ public class AccountServiceImpl implements AccountService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Long login(AccountLoginRequestForm loginForm) {
+        Optional<Account> maybeAccount = accountRepository.findByEmail(loginForm.getEmail());
+
+        if(maybeAccount.isEmpty()){
+            log.info("존재하지 않는 패스워드 입니다.");
+            return null;
+        }
+
+        Account account = maybeAccount.get();
+
+        if(account.getPassword().equals(loginForm.getPassword())){
+
+            return account.getAccountId();
+        }
+
+        log.info("존재하지 않는 아이디입니다.");
+        return null;
+    }
+
+    @Override
+    public Account findAccountById(Long accountId) {
+        Optional<Account> maybeAccount = accountRepository.findById(accountId);
+
+        return maybeAccount.get();
     }
 }

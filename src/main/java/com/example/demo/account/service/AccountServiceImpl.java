@@ -28,12 +28,21 @@ public class AccountServiceImpl implements AccountService{
             return null;
         }
 
-        final Optional<Account> account = accountRepository.findByEmail(email);
+        final Optional<Account> maybeAccount = accountRepository.findByEmail(email);
 
-        if (account.isEmpty()) {
+        if (maybeAccount.isEmpty()) {
             return null;
         }
 
-        return account.get().getNickname();
+        return maybeAccount.get().getNickname();
+    }
+
+    @Override
+    public Boolean checkDuplicateEmail(String email) {
+        final Optional<Account> maybeAccount = accountRepository.findByEmail(email);
+        if (maybeAccount.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }

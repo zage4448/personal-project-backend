@@ -7,4 +7,6 @@ public interface AccountService {
     Boolean register(AccountRegisterRequest registerRequest);
 
     String findAccountNicknameByEmail(String email);
+
+    Boolean checkDuplicateEmail(String email);
 }

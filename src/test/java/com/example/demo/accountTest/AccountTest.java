@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -32,5 +31,15 @@ public class AccountTest {
             String actualNickname = accountService.findAccountNicknameByEmail(email);
             assertEquals(nickname, actualNickname);
         }
+    }
+
+    @Test
+    @DisplayName("이메일 중복확인 테스트")
+    void checkDuplicateTest () {
+        final String email = "test@test.com";
+
+        Boolean isDuplicate = accountService.checkDuplicateEmail(email);
+
+        assertFalse(isDuplicate);
     }
 }

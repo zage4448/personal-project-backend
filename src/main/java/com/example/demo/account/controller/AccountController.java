@@ -1,6 +1,7 @@
 package com.example.demo.account.controller;
 
 import com.example.demo.account.controller.form.AccountLoginRequestForm;
+import com.example.demo.account.controller.form.AccountCommunicationRequestForm;
 import com.example.demo.account.controller.form.AccountRegisterForm;
 import com.example.demo.account.service.AccountService;
 import com.example.demo.redis.service.RedisService;
@@ -40,5 +41,10 @@ public class AccountController {
             return userToken.toString();
         }
         return null;
+    }
+
+    @DeleteMapping("/logout")
+    public void accountLogout (@RequestBody AccountCommunicationRequestForm requestForm) {
+        redisService.deleteByKey(requestForm.getUserToken());
     }
 }

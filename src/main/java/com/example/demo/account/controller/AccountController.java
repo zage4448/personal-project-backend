@@ -5,10 +5,7 @@ import com.example.demo.account.service.AccountService;
 import com.example.demo.redis.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -21,5 +18,10 @@ public class AccountController {
     @PostMapping("/create-account")
     public Boolean accountRegister (@RequestBody AccountRegisterForm registerForm) {
         return accountService.register(registerForm.toAccountRegisterRequest());
+    }
+
+    @GetMapping("/check-email-duplicate/{email}")
+    public Boolean checkEmail(@PathVariable("email") String email) {
+        return accountService.checkDuplicateEmail(email);
     }
 }

@@ -73,4 +73,13 @@ public class AccountServiceImpl implements AccountService{
 
         return maybeAccount.get();
     }
+
+    @Override
+    public Boolean checkDuplicateNickname(String nickname) {
+        final Optional<Account> maybeAccount = accountRepository.findByNickname(nickname);
+        if (maybeAccount.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
 }

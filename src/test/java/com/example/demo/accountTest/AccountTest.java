@@ -89,4 +89,14 @@ public class AccountTest {
 
         assertEquals(null, testAccountId);
     }
+
+    @Test
+    @DisplayName("닉네임 중복확인 테스트")
+    void checkDuplicateNicknameTest () {
+        final String nickname = "test";
+
+        Boolean isDuplicate = accountService.checkDuplicateNickname(nickname);
+
+        assertFalse(isDuplicate);
+    }
 }

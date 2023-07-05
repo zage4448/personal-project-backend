@@ -14,4 +14,6 @@ public interface AccountService {
     Long login(AccountLoginRequestForm loginForm);
 
     Account findAccountById(Long accountId);
+
+    Boolean checkDuplicateNickname(String nickname);
 }

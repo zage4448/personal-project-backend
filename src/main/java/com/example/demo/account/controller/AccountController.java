@@ -47,4 +47,9 @@ public class AccountController {
     public void accountLogout (@RequestBody AccountCommunicationRequestForm requestForm) {
         redisService.deleteByKey(requestForm.getUserToken());
     }
+
+    @GetMapping("/check-nickname-duplicate/{nickname}")
+    public Boolean checkNickname(@PathVariable("nickname") String nickname) {
+        return accountService.checkDuplicateNickname(nickname);
+    }
 }

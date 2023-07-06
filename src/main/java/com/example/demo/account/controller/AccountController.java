@@ -43,8 +43,9 @@ public class AccountController {
         return null;
     }
 
-    @DeleteMapping("/logout")
+    @PostMapping("/logout")
     public void accountLogout (@RequestBody AccountCommunicationRequestForm requestForm) {
+        log.info("logout");
         redisService.deleteByKey(requestForm.getUserToken());
     }
 

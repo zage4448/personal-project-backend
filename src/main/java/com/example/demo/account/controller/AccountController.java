@@ -31,14 +31,14 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public String accountLogin (@RequestBody AccountLoginRequestForm requestForm) {
+    public AccountCommunicationRequestForm accountLogin (@RequestBody AccountLoginRequestForm requestForm) {
         Long accountId = accountService.login(requestForm);
         if (accountId != null) {
             UUID userToken = UUID.randomUUID();
 
             redisService.setKeyAndValue(userToken.toString(), accountId);
 
-            return userToken.toString();
+            return new AccountCommunicationRequestForm(userToken.toString());
         }
         return null;
     }

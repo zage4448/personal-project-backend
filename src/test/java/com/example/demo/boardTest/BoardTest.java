@@ -44,4 +44,17 @@ public class BoardTest {
         assertEquals(writer, board.getWriter());
         assertEquals(category, board.getBoardCategory());
     }
+
+    @Test
+    @DisplayName("게시글 불러오기 테스트")
+    void readBoardTest () {
+        final Long boardId = 1l;
+        final String title = "test board title";
+        final String content = "test board content";
+
+        Board board = boardService.read(boardId);
+
+        assertEquals(title, board.getTitle());
+        assertEquals(content, board.getContent());
+    }
 }

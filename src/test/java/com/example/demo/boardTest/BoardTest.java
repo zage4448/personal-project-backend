@@ -1,0 +1,47 @@
+package com.example.demo.boardTest;
+
+import com.example.demo.account.entity.Account;
+import com.example.demo.account.service.AccountService;
+import com.example.demo.board.controller.form.BoardRegisterForm;
+import com.example.demo.board.entity.Board;
+import com.example.demo.board.entity.BoardCategory;
+import com.example.demo.board.service.BoardService;
+import com.example.demo.board.service.request.BoardRegisterRequest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static com.example.demo.board.entity.BoardCategory.Asia;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@SpringBootTest
+public class BoardTest {
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private BoardService boardService;
+
+    @Test
+    @DisplayName("게시물 등록 테스트")
+    void registerBoardTest () {
+        final Long accountId = 1l;
+        final String title = "test board title";
+        final String content = "test board content";
+        final BoardCategory category = Asia;
+
+        Account account = accountService.findAccountById(accountId);
+        String writer = account.getNickname();
+
+
+        BoardRegisterRequest registerRequest = new BoardRegisterRequest(title, writer, content, category);
+
+        Board board = boardService.register(registerRequest);
+        assertEquals(title, board.getTitle());
+        assertEquals(content, board.getContent());
+        assertEquals(writer, board.getWriter());
+        assertEquals(category, board.getBoardCategory());
+    }
+}

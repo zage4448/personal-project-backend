@@ -3,6 +3,7 @@ package com.example.demo.boardTest;
 import com.example.demo.account.entity.Account;
 import com.example.demo.account.service.AccountService;
 import com.example.demo.board.controller.form.BoardRegisterForm;
+import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.service.BoardService;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static com.example.demo.board.entity.BoardCategory.Asia;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,5 +59,19 @@ public class BoardTest {
 
         assertEquals(title, board.getTitle());
         assertEquals(content, board.getContent());
+    }
+
+    @Test
+    @DisplayName("카테고리별 게시글 리스트 불러오기")
+    void bringCategorizedBoardList () {
+        final BoardCategory category = Asia;
+        final String title = "test board title";
+        final Long boardId = 1l;
+
+        List<CategoryBoardListResponseForm> responseFormList = boardService.getListByCategory(category);
+        CategoryBoardListResponseForm responseForm = responseFormList.get(0);
+
+        assertEquals(title, responseForm.getTitle());
+        assertEquals(boardId, responseForm.getBoardId());
     }
 }

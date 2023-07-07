@@ -60,6 +60,7 @@ public class BoardServiceImpl implements BoardService{
         List<CategoryListForm> categoryList = new ArrayList<>();
         for (BoardCategory category: BoardCategory.values()) {
             Long posts =  boardRepository.findPostNumberByCategory(category);
+            log.info("posts: " + posts);
             categoryList.add(
                     new CategoryListForm( category, posts));
         }

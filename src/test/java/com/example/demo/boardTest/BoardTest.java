@@ -4,6 +4,7 @@ import com.example.demo.account.entity.Account;
 import com.example.demo.account.service.AccountService;
 import com.example.demo.board.controller.form.BoardRegisterForm;
 import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
+import com.example.demo.board.controller.form.CategoryListForm;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.service.BoardService;
@@ -73,5 +74,19 @@ public class BoardTest {
 
         assertEquals(title, responseForm.getTitle());
         assertEquals(boardId, responseForm.getBoardId());
+    }
+
+    @Test
+    @DisplayName("카테고리와 카테고리별 게시글 수량 리스트 불러오기")
+    void bringCategoryListTest() {
+        final BoardCategory category = Asia;
+        final Long posts = 1l;
+
+        List<CategoryListForm> categoryList = boardService.getCategoryList();
+
+        BoardCategory actualCategory = categoryList.get(0).getBoardCategory();
+        Long actualPosts = categoryList.get(0).getPosts();
+        assertEquals(category, actualCategory);
+        assertEquals(posts, actualPosts);
     }
 }

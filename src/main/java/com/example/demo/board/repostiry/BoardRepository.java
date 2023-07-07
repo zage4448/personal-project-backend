@@ -11,4 +11,7 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("SELECT b FROM Board b WHERE b.boardCategory = :category")
     List<Board> findAllByCategory(@Param("category") BoardCategory category);
+
+    @Query("SELECT COUNT(b) FROM Board b WHERE b.boardCategory = :category")
+    long findPostNumberByCategory(@Param("category") BoardCategory category);
 }

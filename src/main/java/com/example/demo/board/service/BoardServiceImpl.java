@@ -1,6 +1,7 @@
 package com.example.demo.board.service;
 
 import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
+import com.example.demo.board.controller.form.CategoryListForm;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.repostiry.BoardRepository;
@@ -52,5 +53,16 @@ public class BoardServiceImpl implements BoardService{
             );
         }
         return categoryBoardList;
+    }
+
+    @Override
+    public List<CategoryListForm> getCategoryList() {
+        List<CategoryListForm> categoryList = new ArrayList<>();
+        for (BoardCategory category: BoardCategory.values()) {
+            Long posts =  boardRepository.findPostNumberByCategory(category);
+            categoryList.add(
+                    new CategoryListForm( category, posts));
+        }
+        return categoryList;
     }
 }

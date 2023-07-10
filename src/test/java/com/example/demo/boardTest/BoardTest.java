@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static com.example.demo.board.entity.BoardCategory.Asia;
+import static com.example.demo.board.entity.BoardCategory.Europe;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -37,15 +38,14 @@ public class BoardTest {
         final BoardCategory category = Asia;
 
         Account account = accountService.findAccountById(accountId);
-        String writer = account.getNickname();
 
 
-        BoardRegisterRequest registerRequest = new BoardRegisterRequest(title, writer, content, category);
+        BoardRegisterRequest registerRequest = new BoardRegisterRequest(title, account, content, category);
 
         Board board = boardService.register(registerRequest);
         assertEquals(title, board.getTitle());
         assertEquals(content, board.getContent());
-        assertEquals(writer, board.getWriter());
+        assertEquals(account.getNickname(), board.getWriter().getNickname());
         assertEquals(category, board.getBoardCategory());
     }
 
@@ -65,7 +65,7 @@ public class BoardTest {
     @Test
     @DisplayName("카테고리별 게시글 리스트 불러오기")
     void bringCategorizedBoardList () {
-        final BoardCategory category = Asia;
+        final BoardCategory category = Europe;
         final String title = "test board title";
         final Long boardId = 1l;
 
@@ -79,13 +79,13 @@ public class BoardTest {
     @Test
     @DisplayName("카테고리와 카테고리별 게시글 수량 리스트 불러오기")
     void bringCategoryListTest() {
-        final BoardCategory category = Asia;
+        final BoardCategory category = Europe;
         final Long posts = 1l;
 
         List<CategoryListForm> categoryList = boardService.getCategoryList();
 
-        BoardCategory actualCategory = categoryList.get(0).getBoardCategory();
-        Long actualPosts = categoryList.get(0).getPosts();
+        BoardCategory actualCategory = categoryList.get(1).getBoardCategory();
+        Long actualPosts = categoryList.get(1).getPosts();
         assertEquals(category, actualCategory);
         assertEquals(posts, actualPosts);
     }

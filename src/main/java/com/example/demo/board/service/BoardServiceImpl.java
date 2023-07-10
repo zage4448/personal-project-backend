@@ -47,7 +47,7 @@ public class BoardServiceImpl implements BoardService{
         for (Board board: boardList) {
             categoryBoardList.add(
                     new CategoryBoardListResponseForm(
-                            board.getBoardId(), board.getTitle(), board.getWriter(),
+                            board.getBoardId(), board.getTitle(), board.getWriter().getNickname(),
                             Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant())
                     )
             );

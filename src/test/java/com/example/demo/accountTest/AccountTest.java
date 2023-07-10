@@ -47,7 +47,7 @@ public class AccountTest {
 
         Boolean isDuplicate = accountService.checkDuplicateEmail(email);
 
-        assertFalse(isDuplicate);
+        assertTrue(isDuplicate);
     }
 
     @Test

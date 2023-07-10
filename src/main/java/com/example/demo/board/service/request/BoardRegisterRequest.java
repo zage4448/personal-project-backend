@@ -1,5 +1,6 @@
 package com.example.demo.board.service.request;
 
+import com.example.demo.account.entity.Account;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardRegisterRequest {
     final private String title;
-    final private String writer;
+    final private Account writer;
     final private String content;
     final private BoardCategory category;
 

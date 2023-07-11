@@ -43,10 +43,11 @@ public class BoardTest {
 
         BoardRegisterRequest registerRequest = new BoardRegisterRequest(title, account, content, category);
 
-        Board board = boardService.register(registerRequest);
+        Long boardId = boardService.register(registerRequest);
+        ReadBoardResponseForm board = boardService.read(boardId);
         assertEquals(title, board.getTitle());
         assertEquals(content, board.getContent());
-        assertEquals(account.getNickname(), board.getWriter().getNickname());
+        assertEquals(account.getNickname(), board.getWriter());
         assertEquals(category, board.getBoardCategory());
     }
 

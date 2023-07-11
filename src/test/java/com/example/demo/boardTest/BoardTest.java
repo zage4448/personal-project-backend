@@ -5,6 +5,7 @@ import com.example.demo.account.service.AccountService;
 import com.example.demo.board.controller.form.BoardRegisterForm;
 import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
 import com.example.demo.board.controller.form.CategoryListForm;
+import com.example.demo.board.controller.form.ReadBoardResponseForm;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.service.BoardService;
@@ -56,7 +57,7 @@ public class BoardTest {
         final String title = "test board title";
         final String content = "test board content";
 
-        Board board = boardService.read(boardId);
+        ReadBoardResponseForm board = boardService.read(boardId);
 
         assertEquals(title, board.getTitle());
         assertEquals(content, board.getContent());

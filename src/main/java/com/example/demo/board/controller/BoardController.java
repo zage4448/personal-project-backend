@@ -2,6 +2,7 @@ package com.example.demo.board.controller;
 
 import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
 import com.example.demo.board.controller.form.CategoryListForm;
+import com.example.demo.board.controller.form.ReadBoardResponseForm;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,10 @@ public class BoardController {
     public List<CategoryBoardListResponseForm> categoryBoardList (@PathVariable("category") BoardCategory category) {
 
         return boardService.getListByCategory(category);
+    }
+
+    @GetMapping("/{boardId}")
+    public ReadBoardResponseForm readBoard (@PathVariable("boardId") Long boardId) {
+        return boardService.read(boardId);
     }
 }

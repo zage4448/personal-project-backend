@@ -2,6 +2,7 @@ package com.example.demo.board.service;
 
 import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
 import com.example.demo.board.controller.form.CategoryListForm;
+import com.example.demo.board.controller.form.ReadBoardResponseForm;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.repostiry.BoardRepository;
@@ -30,11 +31,17 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public Board read(Long boardId) {
+    public ReadBoardResponseForm read(Long boardId) {
         Optional<Board> maybeBoard = boardRepository.findById(boardId);
 
         if (maybeBoard.isPresent()) {
-            return maybeBoard.get();
+            Board board = maybeBoard.get();
+            return new ReadBoardResponseForm(board.getTitle(),
+                                        board.getWriter().getNickname(),
+                                        board.getContent(),
+                                        Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant()),
+                                        Date.from(board.getUpdateDate().atZone(ZoneId.systemDefault()).toInstant()),
+                                        board.getBoardCategory());
         }
         return null;
     }

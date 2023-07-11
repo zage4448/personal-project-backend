@@ -10,7 +10,7 @@ import com.example.demo.board.service.request.BoardRegisterRequest;
 import java.util.List;
 
 public interface BoardService {
-    Board register(BoardRegisterRequest registerRequest);
+    Long register(BoardRegisterRequest registerRequest);
 
     ReadBoardResponseForm read(Long boardId);
 

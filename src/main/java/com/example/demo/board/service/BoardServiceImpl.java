@@ -26,8 +26,9 @@ public class BoardServiceImpl implements BoardService{
     final private BoardRepository boardRepository;
 
     @Override
-    public Board register(BoardRegisterRequest registerRequest) {
-        return  boardRepository.save(registerRequest.toBoard());
+    public Long register(BoardRegisterRequest registerRequest) {
+        Board board = boardRepository.save(registerRequest.toBoard());
+        return board.getBoardId();
     }
 
     @Override

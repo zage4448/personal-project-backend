@@ -1,16 +1,18 @@
 package com.example.demo.board.controller;
 
+import com.example.demo.account.entity.Account;
+import com.example.demo.account.service.AccountService;
+import com.example.demo.board.controller.form.BoardRegisterForm;
 import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
 import com.example.demo.board.controller.form.CategoryListForm;
 import com.example.demo.board.controller.form.ReadBoardResponseForm;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.service.BoardService;
+import com.example.demo.board.service.request.BoardRegisterRequest;
+import com.example.demo.redis.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +23,8 @@ import java.util.List;
 public class BoardController {
 
     final private BoardService boardService;
+    final private AccountService accountService;
+    final private RedisService redisService;
 
     @GetMapping("/category-list")
     public List<CategoryListForm> getCategoryList() {
@@ -36,5 +40,13 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public ReadBoardResponseForm readBoard (@PathVariable("boardId") Long boardId) {
         return boardService.read(boardId);
+    }
+
+    @PostMapping("/register")
+    public Long registerBoard (@RequestBody BoardRegisterForm registerForm) {
+        Long accountId = redisService.getValueByKey(registerForm.getUserToken());
+        Account account = accountService.findAccountById(accountId);
+        log.info("카테고리: " + registerForm.getCategory());
+        return boardService.register(new BoardRegisterRequest(registerForm.getTitle(), account, registerForm.getContent(), registerForm.getCategory()));
     }
 }

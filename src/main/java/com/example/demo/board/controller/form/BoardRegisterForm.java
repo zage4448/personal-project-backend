@@ -1,6 +1,7 @@
 package com.example.demo.board.controller.form;
 
 import com.example.demo.board.entity.BoardCategory;
+import com.example.demo.board.service.request.BoardRegisterRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

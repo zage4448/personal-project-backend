@@ -7,6 +7,7 @@ import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.repostiry.BoardRepository;
 import com.example.demo.board.service.request.BoardRegisterRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -42,7 +43,8 @@ public class BoardServiceImpl implements BoardService{
                                         board.getContent(),
                                         Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant()),
                                         Date.from(board.getUpdateDate().atZone(ZoneId.systemDefault()).toInstant()),
-                                        board.getBoardCategory());
+                                        board.getBoardCategory(),
+                                        board.getViews());
         }
         return null;
     }
@@ -73,5 +75,11 @@ public class BoardServiceImpl implements BoardService{
                     new CategoryListForm( category, posts));
         }
         return categoryList;
+    }
+
+    @Override
+    @Transactional
+    public Integer updateViews(Long boardId) {
+        return boardRepository.updateViews(boardId);
     }
 }

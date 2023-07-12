@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -37,6 +38,10 @@ public class Board {
         this.content = content;
         this.boardCategory = boardCategory;
     }
+
+    @Setter
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int views;
 
     @CreationTimestamp
     private LocalDateTime createDate;

@@ -39,6 +39,7 @@ public class BoardController {
 
     @GetMapping("/{boardId}")
     public ReadBoardResponseForm readBoard (@PathVariable("boardId") Long boardId) {
+        boardService.updateViews(boardId);
         return boardService.read(boardId);
     }
 
@@ -46,7 +47,6 @@ public class BoardController {
     public Long registerBoard (@RequestBody BoardRegisterForm registerForm) {
         Long accountId = redisService.getValueByKey(registerForm.getUserToken());
         Account account = accountService.findAccountById(accountId);
-        log.info("카테고리: " + registerForm.getCategory());
         return boardService.register(new BoardRegisterRequest(registerForm.getTitle(), account, registerForm.getContent(), registerForm.getCategory()));
     }
 }

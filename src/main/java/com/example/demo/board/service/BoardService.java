@@ -17,4 +17,6 @@ public interface BoardService {
     List<CategoryBoardListResponseForm> getListByCategory(BoardCategory category);
 
     List<CategoryListForm> getCategoryList();
+
+    Integer updateViews(Long boardId);
 }

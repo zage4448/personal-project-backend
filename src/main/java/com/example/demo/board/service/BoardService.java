@@ -3,6 +3,7 @@ package com.example.demo.board.service;
 import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
 import com.example.demo.board.controller.form.CategoryListForm;
 import com.example.demo.board.controller.form.ReadBoardResponseForm;
+import com.example.demo.board.controller.form.SearchBoardListResponseForm;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.service.request.BoardRegisterRequest;
@@ -19,4 +20,6 @@ public interface BoardService {
     List<CategoryListForm> getCategoryList();
 
     Integer updateViews(Long boardId);
+
+    List<SearchBoardListResponseForm> searchBoards(String searchKeyword);
 }

@@ -2,10 +2,7 @@ package com.example.demo.board.controller;
 
 import com.example.demo.account.entity.Account;
 import com.example.demo.account.service.AccountService;
-import com.example.demo.board.controller.form.BoardRegisterForm;
-import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
-import com.example.demo.board.controller.form.CategoryListForm;
-import com.example.demo.board.controller.form.ReadBoardResponseForm;
+import com.example.demo.board.controller.form.*;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.service.BoardService;
 import com.example.demo.board.service.request.BoardRegisterRequest;
@@ -52,6 +49,12 @@ public class BoardController {
         Account account = accountService.findAccountById(accountId);
         return boardService.register(new BoardRegisterRequest(registerForm.getTitle(), account, registerForm.getContent(), registerForm.getCategory()));
     }
+
+    @GetMapping("/list/search/{searchKeyword}")
+    public List<SearchBoardListResponseForm> searchBoards (@PathVariable("searchKeyword") String searchKeyword) {
+        return boardService.searchBoards(searchKeyword);
+    }
+
 
 
     private void viewsCountUp(Long boardId, HttpServletRequest req, HttpServletResponse res){

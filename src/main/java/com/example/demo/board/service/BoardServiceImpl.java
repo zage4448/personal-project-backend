@@ -3,14 +3,14 @@ package com.example.demo.board.service;
 import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
 import com.example.demo.board.controller.form.CategoryListForm;
 import com.example.demo.board.controller.form.ReadBoardResponseForm;
+import com.example.demo.board.controller.form.SearchBoardListResponseForm;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
-import com.example.demo.board.repostiry.BoardRepository;
+import com.example.demo.board.repository.BoardRepository;
 import com.example.demo.board.service.request.BoardRegisterRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -75,6 +75,21 @@ public class BoardServiceImpl implements BoardService{
                     new CategoryListForm( category, posts));
         }
         return categoryList;
+    }
+
+    @Override
+    public List<SearchBoardListResponseForm> searchBoards(String searchKeyword) {
+        List<Board> searchedBoardList = boardRepository.findByKeywordSorted(searchKeyword);
+        List<SearchBoardListResponseForm> responseFormList = new ArrayList<>();
+        for (Board board: searchedBoardList) {
+            responseFormList.add(
+                    new SearchBoardListResponseForm(
+                            board.getBoardId(), board.getTitle(), board.getWriter().getNickname(), board.getContent(),
+                            Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant())
+                    )
+            );
+        }
+        return responseFormList;
     }
 
     @Override

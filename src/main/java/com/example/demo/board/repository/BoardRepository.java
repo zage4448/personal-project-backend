@@ -3,6 +3,7 @@ package com.example.demo.board.repository;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    @Query("SELECT b FROM Board b WHERE b.boardCategory = :category")
+    @Query("SELECT b FROM Board b WHERE b.boardCategory = :category ORDER BY b.createDate DESC")
     List<Board> findAllByCategory(@Param("category") BoardCategory category);
 
     @Query("SELECT COUNT(b) FROM Board b WHERE b.boardCategory = :category")
@@ -33,4 +34,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "OR b.writer.nickname LIKE CONCAT('%', :keyword, '%') " +
             "ORDER BY b.views DESC")
     List<Board> findByKeywordSorted(@Param("keyword") String keyword);
+
+    @Query("SELECT b FROM Board b WHERE b.boardCategory = :boardCategory AND b.boardId <> :boardId ORDER BY b.createDate DESC")
+    List<Board> findRelatedBoardsByCategoryAndBoardIdNot(BoardCategory boardCategory, Long boardId, Pageable pageable);
 }

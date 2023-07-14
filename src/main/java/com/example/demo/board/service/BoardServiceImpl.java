@@ -1,9 +1,6 @@
 package com.example.demo.board.service;
 
-import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
-import com.example.demo.board.controller.form.CategoryListForm;
-import com.example.demo.board.controller.form.ReadBoardResponseForm;
-import com.example.demo.board.controller.form.SearchBoardListResponseForm;
+import com.example.demo.board.controller.form.*;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import com.example.demo.board.repository.BoardRepository;
@@ -11,6 +8,8 @@ import com.example.demo.board.service.request.BoardRegisterRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -88,6 +87,26 @@ public class BoardServiceImpl implements BoardService{
                             Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant()), board.getBoardCategory()
                     )
             );
+        }
+        return responseFormList;
+    }
+
+    @Override
+    public List<RelatedBoardResponseForm> getRelatedBoardList(Long boardId) {
+        Optional<Board> maybeBoard = boardRepository.findById(boardId);
+        if (maybeBoard.isEmpty()) {
+            return null;
+        }
+        Board currentBoard = maybeBoard.get();
+        BoardCategory category = currentBoard.getBoardCategory();
+        List<Board> boardList = boardRepository
+                                        .findRelatedBoardsByCategoryAndBoardIdNot(
+                                                category, boardId,
+                                                PageRequest.of(0, 2,
+                                                        Sort.by(Sort.Direction.DESC, "createDate")));
+        List<RelatedBoardResponseForm> responseFormList = new ArrayList<>();
+        for (Board board: boardList) {
+            responseFormList.add(new RelatedBoardResponseForm(board.getBoardId(), board.getTitle()));
         }
         return responseFormList;
     }

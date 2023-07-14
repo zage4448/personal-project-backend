@@ -1,34 +1,67 @@
 package com.example.demo.boardTest;
 
+import com.example.demo.account.controller.form.AccountRegisterForm;
 import com.example.demo.account.entity.Account;
+import com.example.demo.account.repository.AccountRepository;
 import com.example.demo.account.service.AccountService;
-import com.example.demo.board.controller.form.BoardRegisterForm;
-import com.example.demo.board.controller.form.CategoryBoardListResponseForm;
-import com.example.demo.board.controller.form.CategoryListForm;
-import com.example.demo.board.controller.form.ReadBoardResponseForm;
+import com.example.demo.account.service.AccountServiceImpl;
+import com.example.demo.account.service.request.AccountRegisterRequest;
+import com.example.demo.board.controller.form.*;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
+import com.example.demo.board.repository.BoardRepository;
 import com.example.demo.board.service.BoardService;
+import com.example.demo.board.service.BoardServiceImpl;
 import com.example.demo.board.service.request.BoardRegisterRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.demo.board.entity.BoardCategory.Asia;
 import static com.example.demo.board.entity.BoardCategory.Europe;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class BoardTest {
 
-    @Autowired
-    private AccountService accountService;
+    @Mock
+    private BoardRepository boardRepository;
 
-    @Autowired
-    private BoardService boardService;
+    @Mock
+    private AccountRepository accountRepository;
+
+    @InjectMocks
+    private BoardServiceImpl boardService;
+    @InjectMocks
+    private AccountServiceImpl accountService;
+
+    @BeforeEach // 최초 테스트 초기화
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        boardService = new BoardServiceImpl(boardRepository);
+        accountService = new AccountServiceImpl(accountRepository);
+    }
+
+//    @Autowired
+//    private AccountService accountService;
+//
+//    @Autowired
+//    private BoardService boardService;
 
     @Test
     @DisplayName("게시물 등록 테스트")
@@ -90,5 +123,45 @@ public class BoardTest {
         Long actualPosts = categoryList.get(1).getPosts();
         assertEquals(category, actualCategory);
         assertEquals(posts, actualPosts);
+    }
+
+
+
+
+    @Test
+    @DisplayName("해당 게시글과 같은 카테고리의 최신 2개 게시글 가져오기")
+    void bringRelatedBoardList() throws NoSuchFieldException, IllegalAccessException {
+        BoardCategory boardCategory = Asia;
+        Long boardId = 1L;
+
+        LocalDateTime now = LocalDateTime.now();
+
+        Board selectedBoard = new Board ("selectedTitle", null, "selectedContent", boardCategory);
+        Board board1 = createBoardWithDate("Title1", null, "Content1", boardCategory, now, now);
+        Board board2 = createBoardWithDate("Title2", null, "Content2", boardCategory, now, now);
+
+        Mockito.when(boardRepository.findRelatedBoardsByCategoryAndBoardIdNot(boardCategory, boardId,
+                        PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "createDate"))))
+                .thenReturn(List.of(board1, board2));
+
+        Mockito.when(boardRepository.findById(boardId)).thenReturn(Optional.of(selectedBoard));
+
+
+        List<RelatedBoardResponseForm> result = boardService.getRelatedBoardList(boardId);
+
+        assertEquals(result.get(0).getTitle(), board1.getTitle());
+        assertEquals(result.get(1).getTitle(), board2.getTitle());
+    }
+
+
+    private Board createBoardWithDate(String title, Account account, String content, BoardCategory boardCategory, LocalDateTime createDate, LocalDateTime updateDate) throws NoSuchFieldException, IllegalAccessException {
+        Board board = new Board(title, account, content, boardCategory);
+        Field createDateField = Board.class.getDeclaredField("createDate");
+        createDateField.setAccessible(true);
+        createDateField.set(board, createDate);
+        Field updateDateField = Board.class.getDeclaredField("updateDate");
+        updateDateField.setAccessible(true);
+        updateDateField.set(board, updateDate);
+        return board;
     }
 }

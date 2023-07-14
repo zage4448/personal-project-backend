@@ -10,6 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -42,6 +44,22 @@ public class Board {
     @Setter
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int views;
+
+    @ManyToMany
+    @JoinTable(name = "board_likes",
+            joinColumns = @JoinColumn(name = "board_id"),
+            inverseJoinColumns = @JoinColumn(name = "account_id"))
+    private Set<Account> likes = new HashSet<>();
+
+    public void addLike(Account account) {
+        likes.add(account);
+        account.getLikedBoards().add(this);
+    }
+
+    public void removeLike(Account account) {
+        likes.remove(account);
+        account.getLikedBoards().remove(this);
+    }
 
     @CreationTimestamp
     private LocalDateTime createDate;

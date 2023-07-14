@@ -1,5 +1,7 @@
 package com.example.demo.board.service;
 
+import com.example.demo.account.entity.Account;
+import com.example.demo.account.repository.AccountRepository;
 import com.example.demo.board.controller.form.*;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
@@ -20,10 +22,12 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
 
     final private BoardRepository boardRepository;
+    final private AccountRepository accountRepository;
 
     @Override
     public Long register(BoardRegisterRequest registerRequest) {
@@ -43,7 +47,8 @@ public class BoardServiceImpl implements BoardService{
                                         Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant()),
                                         Date.from(board.getUpdateDate().atZone(ZoneId.systemDefault()).toInstant()),
                                         board.getBoardCategory(),
-                                        board.getViews());
+                                        board.getViews(),
+                                        board.getLikes().size());
         }
         return null;
     }
@@ -129,5 +134,52 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public Integer updateViews(Long boardId) {
         return boardRepository.updateViews(boardId);
+    }
+
+    @Override
+    public Boolean likeBoard(Long boardId, Long accountId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        if (board.getLikes().contains(account)) {
+            return false;
+        }
+        board.addLike(account);
+        boardRepository.save(board);
+        return true;
+    }
+
+    @Override
+    public Boolean unlikeBoard(Long boardId, Long accountId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        if (!board.getLikes().contains(account)) {
+            return false;
+        }
+
+        board.removeLike(account);
+        boardRepository.save(board);
+        return true;
+    }
+
+    @Override
+    public Boolean isBoardLiked(Long boardId, Long accountId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        if (account.getLikedBoards().contains(board)) {
+            return true;
+        }
+        return false;
     }
 }

@@ -17,4 +17,5 @@ public class ReadBoardResponseForm {
     final private Date updateDate;
     final private BoardCategory boardCategory;
     final private int views;
+    final private int likeCount;
 }

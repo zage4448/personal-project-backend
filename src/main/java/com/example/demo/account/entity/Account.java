@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,6 +25,9 @@ public class Account {
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "likes", fetch = FetchType.EAGER)
+    private Set<Board> likedBoards = new HashSet<>();
 
     public Account(String email, String password, String nickname) {
         this.email = email;

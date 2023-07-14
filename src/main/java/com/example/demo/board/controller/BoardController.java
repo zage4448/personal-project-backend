@@ -65,6 +65,28 @@ public class BoardController {
         return boardService.getRecentBoardList();
     }
 
+    @PostMapping("/likeBoard")
+    public void likeBoard (@RequestBody BoardLikeRequestForm requestForm) {
+        Long accountId = redisService.getValueByKey(requestForm.getUserToken());
+        boardService.likeBoard(requestForm.getBoardId(), accountId);
+    }
+
+    @PostMapping("/unLikeBoard")
+    public void unLikeBoard (@RequestBody BoardLikeRequestForm requestForm) {
+        Long accountId = redisService.getValueByKey(requestForm.getUserToken());
+        boardService.unlikeBoard(requestForm.getBoardId(), accountId);
+    }
+
+    @GetMapping("/checkBoardLiked")
+    public Boolean isBoardLiked(@RequestParam("userToken") String userToken, @RequestParam("boardId") Long boardId) {
+        if (userToken == null) {
+            return false;
+        }
+
+        Long accountId = redisService.getValueByKey(userToken);
+        return boardService.isBoardLiked(boardId, accountId);
+    }
+
 
     private void viewsCountUp(Long boardId, HttpServletRequest req, HttpServletResponse res){
         Cookie oldCookie = null;

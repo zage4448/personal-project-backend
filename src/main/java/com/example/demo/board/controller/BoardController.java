@@ -60,6 +60,10 @@ public class BoardController {
         return boardService.getRelatedBoardList(boardId);
     }
 
+    @GetMapping("/list/recent")
+    public List<RecentBoardListResponseForm> getRecentList () {
+        return boardService.getRecentBoardList();
+    }
 
 
     private void viewsCountUp(Long boardId, HttpServletRequest req, HttpServletResponse res){

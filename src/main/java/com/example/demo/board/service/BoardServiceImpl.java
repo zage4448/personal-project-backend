@@ -84,7 +84,7 @@ public class BoardServiceImpl implements BoardService{
         for (Board board: searchedBoardList) {
             responseFormList.add(
                     new SearchBoardListResponseForm(
-                            board.getBoardId(), board.getTitle(), board.getWriter().getNickname(), board.getContent(),
+                            board.getBoardId(), board.getTitle(), board.getWriter().getNickname(), board.getContent().replace("<br>", "\n"),
                             Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant())
                     )
             );

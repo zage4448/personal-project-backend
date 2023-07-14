@@ -55,6 +55,11 @@ public class BoardController {
         return boardService.searchBoards(searchKeyword);
     }
 
+    @GetMapping("/list/related-board/{boardId}")
+    public List<RelatedBoardResponseForm> getRelatedBoardList (@PathVariable("boardId") Long boardId) {
+        return boardService.getRelatedBoardList(boardId);
+    }
+
 
 
     private void viewsCountUp(Long boardId, HttpServletRequest req, HttpServletResponse res){

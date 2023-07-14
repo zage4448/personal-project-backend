@@ -209,6 +209,22 @@ public class BoardTest {
         assertEquals(result.get(1).getTitle(), board2.getTitle());
     }
 
+    @Test
+    @DisplayName("게시글들을 최신 순으로 나열한다")
+    void bringRecentBoardsTest() throws NoSuchFieldException, IllegalAccessException {
+        Account account = new Account(null, null, "tester");
+        LocalDateTime now = LocalDateTime.now();
+        Board board1 = createBoardWithDate("Title1", account, "Content1", Asia, now.minusHours(1), now);
+        Board board2 = createBoardWithDate("Title2", account, "Content2", Asia, now.minusHours(2), now);
+
+
+        Mockito.when(boardRepository.findRecentBoards()).thenReturn(List.of(board1,board2));
+        List<RecentBoardListResponseForm> result = boardService.getRecentBoardList();
+
+        assertEquals(result.get(0).getTitle(), board1.getTitle());
+        assertEquals(result.get(1).getTitle(), board2.getTitle());
+    }
+
 
     private Board createBoardWithDate(String title, Account account, String content, BoardCategory boardCategory, LocalDateTime createDate, LocalDateTime updateDate) throws NoSuchFieldException, IllegalAccessException {
         Board board = new Board(title, account, content, boardCategory);

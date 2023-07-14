@@ -112,6 +112,20 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public List<RecentBoardListResponseForm> getRecentBoardList() {
+        List<Board> boardList = boardRepository.findRecentBoards();
+
+        List<RecentBoardListResponseForm> recentBoardList = new ArrayList<>();
+
+        for (Board board: boardList) {
+            recentBoardList.add(new RecentBoardListResponseForm(
+                    board.getBoardId(), board.getTitle(), board.getWriter().getNickname(), board.getBoardCategory(),
+                    Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant())));
+        }
+        return recentBoardList;
+    }
+
+    @Override
     @Transactional
     public Integer updateViews(Long boardId) {
         return boardRepository.updateViews(boardId);

@@ -21,4 +21,6 @@ public interface BoardService {
     List<SearchBoardListResponseForm> searchBoards(String searchKeyword);
 
     List<RelatedBoardResponseForm> getRelatedBoardList(Long boardId);
+
+    List<RecentBoardListResponseForm> getRecentBoardList();
 }

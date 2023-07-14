@@ -37,4 +37,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("SELECT b FROM Board b WHERE b.boardCategory = :boardCategory AND b.boardId <> :boardId ORDER BY b.createDate DESC")
     List<Board> findRelatedBoardsByCategoryAndBoardIdNot(BoardCategory boardCategory, Long boardId, Pageable pageable);
+
+    @Query("SELECT b FROM Board b ORDER BY b.createDate DESC")
+    List<Board> findRecentBoards();
 }

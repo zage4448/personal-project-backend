@@ -16,7 +16,7 @@ public class CommentListResponseForm {
 
     public CommentListResponseForm(Comment comment, String nickname) {
         this.commentId = comment.getCommentId();
-        this.content = comment.getContent();
+        this.content = comment.getContent().replace("\n", "<br>");
         this.nickname = nickname;
         this.createDate = Date.from(comment.getCreateDate().atZone(ZoneId.systemDefault()).toInstant());
     }

@@ -1,16 +1,18 @@
 package com.example.demo.board.entity;
 
 import com.example.demo.account.entity.Account;
+import com.example.demo.comment.entity.Comment;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -50,6 +52,10 @@ public class Board {
             joinColumns = @JoinColumn(name = "board_id"),
             inverseJoinColumns = @JoinColumn(name = "account_id"))
     private Set<Account> likes = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     public void addLike(Account account) {
         likes.add(account);

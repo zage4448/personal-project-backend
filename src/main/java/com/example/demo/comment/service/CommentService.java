@@ -7,5 +7,5 @@ import java.util.List;
 public interface CommentService {
     void addComment(Long boardId, String comment, Long accountId);
 
-
+    List<CommentListResponseForm> getAllCommentsWithNicknameByBoardId(Long boardId);
 }

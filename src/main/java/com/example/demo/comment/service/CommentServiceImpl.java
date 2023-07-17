@@ -37,5 +37,17 @@ public class CommentServiceImpl implements CommentService{
         commentRepository.save(comment);
         boardRepository.save(board);
     }
-    
+
+    @Override
+    public List<CommentListResponseForm> getAllCommentsWithNicknameByBoardId(Long boardId) {
+        List<Comment> comments = commentRepository.findByBoardId(boardId);
+        List<CommentListResponseForm> result = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            Account account = accountRepository.findById(comment.getAccount().getAccountId()) // account 조회
+                    .orElseThrow(() -> new EntityNotFoundException("Account not found."));
+            result.add(new CommentListResponseForm(comment, account.getNickname())); // DTO 객체 생성
+        }
+        return result;
+    }
 }

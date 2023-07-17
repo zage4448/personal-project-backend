@@ -25,4 +25,8 @@ public class CommentController {
         commentService.addComment(boardId, requestForm.getComment(), accountId);
     }
 
+    @GetMapping("/list")
+    public List<CommentListResponseForm> getAllCommentsWithNicknameByBoardId(@PathVariable Long boardId) {
+        return commentService.getAllCommentsWithNicknameByBoardId(boardId);
+    }
 }

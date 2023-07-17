@@ -54,7 +54,7 @@ public class Board {
     private Set<Account> likes = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     public void addLike(Account account) {

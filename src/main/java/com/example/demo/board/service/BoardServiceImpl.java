@@ -48,7 +48,8 @@ public class BoardServiceImpl implements BoardService{
                                         Date.from(board.getUpdateDate().atZone(ZoneId.systemDefault()).toInstant()),
                                         board.getBoardCategory(),
                                         board.getViews(),
-                                        board.getLikes().size());
+                                        board.getLikes().size(),
+                                        board.getComments().size());
         }
         return null;
     }

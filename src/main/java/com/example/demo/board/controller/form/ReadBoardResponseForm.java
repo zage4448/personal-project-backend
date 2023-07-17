@@ -18,4 +18,5 @@ public class ReadBoardResponseForm {
     final private BoardCategory boardCategory;
     final private int views;
     final private int likeCount;
+    final private int commentCount;
 }

@@ -76,4 +76,11 @@ public class AccountController {
         Long accountId = redisService.getValueByKey(userToken);
         return accountService.changePassword(accountId, requestForm);
     }
+
+    @DeleteMapping("/{userToken}/delete-account")
+    public void deleteAccount(@PathVariable("userToken") String userToken) {
+        Long accountId = redisService.getValueByKey(userToken);
+        accountService.deleteAccount(accountId);
+        redisService.deleteByKey(userToken);
+    }
 }

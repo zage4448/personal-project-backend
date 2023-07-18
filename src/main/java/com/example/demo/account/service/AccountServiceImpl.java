@@ -129,4 +129,12 @@ public class AccountServiceImpl implements AccountService{
         }
         return false;
     }
+
+    @Override
+    public void deleteAccount(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        accountRepository.delete(account);
+    }
 }

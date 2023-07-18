@@ -26,4 +26,6 @@ public interface AccountService {
     void changeNickname(Long accountId, String newNickname);
 
     Boolean changePassword(Long accountId, ChangePasswordRequestForm requestForm);
+
+    void deleteAccount(Long accountId);
 }

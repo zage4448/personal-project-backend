@@ -208,4 +208,12 @@ public class BoardServiceImpl implements BoardService{
 
         boardRepository.save(board);
     }
+
+    @Override
+    public void delete(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+        boardRepository.delete(board);
+    }
 }

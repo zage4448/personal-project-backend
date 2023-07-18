@@ -33,4 +33,6 @@ public interface BoardService {
     List<MyBoardsResponseForm> getMyBoardList(Long accountId);
 
     void modify(Long boardId, BoardModifyRequestForm requestForm);
+
+    void delete(Long boardId);
 }

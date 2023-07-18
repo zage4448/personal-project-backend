@@ -98,6 +98,11 @@ public class BoardController {
         boardService.modify(boardId, requestForm);
     }
 
+    @DeleteMapping("/{boardId}/delete")
+    public void deleteBoard(@PathVariable("boardId") Long boardId) {
+        boardService.delete(boardId);
+    }
+
 
     private void viewsCountUp(Long boardId, HttpServletRequest req, HttpServletResponse res){
         Cookie oldCookie = null;

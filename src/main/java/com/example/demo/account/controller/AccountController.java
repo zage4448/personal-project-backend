@@ -1,5 +1,6 @@
 package com.example.demo.account.controller;
 
+import com.example.demo.account.controller.form.AccountInfoResponseForm;
 import com.example.demo.account.controller.form.AccountLoginRequestForm;
 import com.example.demo.account.controller.form.AccountCommunicationRequestForm;
 import com.example.demo.account.controller.form.AccountRegisterForm;
@@ -52,5 +53,11 @@ public class AccountController {
     @GetMapping("/check-nickname-duplicate/{nickname}")
     public Boolean checkNickname(@PathVariable("nickname") String nickname) {
         return accountService.checkDuplicateNickname(nickname);
+    }
+
+    @GetMapping("/{userToken}/account-info")
+    public AccountInfoResponseForm getAccountInfo(@PathVariable("userToken") String userToken) {
+        Long accountId = redisService.getValueByKey(userToken);
+        return accountService.getAccountInfo(accountId);
     }
 }

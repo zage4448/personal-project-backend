@@ -1,5 +1,6 @@
 package com.example.demo.account.service;
 
+import com.example.demo.account.controller.form.AccountInfoResponseForm;
 import com.example.demo.account.controller.form.AccountLoginRequestForm;
 import com.example.demo.account.entity.Account;
 import com.example.demo.account.service.request.AccountRegisterRequest;
@@ -16,4 +17,6 @@ public interface AccountService {
     Account findAccountById(Long accountId);
 
     Boolean checkDuplicateNickname(String nickname);
+
+    AccountInfoResponseForm getAccountInfo(Long accountId);
 }

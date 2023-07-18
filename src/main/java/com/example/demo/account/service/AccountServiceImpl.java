@@ -1,5 +1,6 @@
 package com.example.demo.account.service;
 
+import com.example.demo.account.controller.form.AccountInfoResponseForm;
 import com.example.demo.account.controller.form.AccountLoginRequestForm;
 import com.example.demo.account.controller.form.AccountRegisterForm;
 import com.example.demo.account.entity.Account;
@@ -83,5 +84,16 @@ public class AccountServiceImpl implements AccountService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public AccountInfoResponseForm getAccountInfo(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        AccountInfoResponseForm responseForm = new AccountInfoResponseForm(
+                account.getEmail(), account.getNickname(), account.getBoards().size()
+        );
+        return responseForm;
     }
 }

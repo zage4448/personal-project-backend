@@ -107,4 +107,12 @@ public class AccountServiceImpl implements AccountService{
         }
         return false;
     }
+
+    @Override
+    public void changeNickname(Long accountId, String newNickname) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+        account.setNickname(newNickname);
+        accountRepository.save(account);
+    }
 }

@@ -1,9 +1,6 @@
 package com.example.demo.account.controller;
 
-import com.example.demo.account.controller.form.AccountInfoResponseForm;
-import com.example.demo.account.controller.form.AccountLoginRequestForm;
-import com.example.demo.account.controller.form.AccountCommunicationRequestForm;
-import com.example.demo.account.controller.form.AccountRegisterForm;
+import com.example.demo.account.controller.form.*;
 import com.example.demo.account.service.AccountService;
 import com.example.demo.redis.service.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -65,5 +62,12 @@ public class AccountController {
     public Boolean checkPassword(@PathVariable("userToken") String userToken, @RequestParam("password") String password) {
         Long accountId = redisService.getValueByKey(userToken);
         return accountService.checkPassword(accountId, password);
+    }
+
+    @PutMapping("/{userToken}/change-nickname")
+    public void changeNickname(@PathVariable("userToken") String userToken, @RequestBody ChangeNicknameRequestForm requestForm) {
+        Long accountId = redisService.getValueByKey(userToken);
+        String newNickname = requestForm.getNewNickname();
+        accountService.changeNickname(accountId, newNickname);
     }
 }

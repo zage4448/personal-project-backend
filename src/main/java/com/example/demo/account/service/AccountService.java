@@ -21,4 +21,6 @@ public interface AccountService {
     AccountInfoResponseForm getAccountInfo(Long accountId);
 
     Boolean checkPassword(Long accountId, String password);
+
+    void changeNickname(Long accountId, String newNickname);
 }

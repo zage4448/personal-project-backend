@@ -93,6 +93,11 @@ public class BoardController {
         return boardService.getMyBoardList(accountId);
     }
 
+    @PutMapping("/{boardId}/modify-board")
+    public void modifyBoard(@PathVariable("boardId") Long boardId, @RequestBody BoardModifyRequestForm requestForm) {
+        boardService.modify(boardId, requestForm);
+    }
+
 
     private void viewsCountUp(Long boardId, HttpServletRequest req, HttpServletResponse res){
         Cookie oldCookie = null;

@@ -197,4 +197,15 @@ public class BoardServiceImpl implements BoardService{
         }
         return responseList;
     }
+
+    @Override
+    public void modify(Long boardId, BoardModifyRequestForm requestForm) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+        board.setTitle(requestForm.getTitle());
+        board.setContent(requestForm.getContent().replace("\n", "<br>"));
+
+        boardRepository.save(board);
+    }
 }

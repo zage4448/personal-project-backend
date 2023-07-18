@@ -25,12 +25,14 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardId;
 
+    @Setter
     private String title;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account writer;
 
+    @Setter
     private String content;
 
     @Enumerated(EnumType.STRING)

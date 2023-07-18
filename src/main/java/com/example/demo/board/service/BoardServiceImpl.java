@@ -15,10 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -215,5 +212,19 @@ public class BoardServiceImpl implements BoardService{
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
         boardRepository.delete(board);
+    }
+
+    @Override
+    public List<MyLikedBoardsResponseForm> getMyLikedBoardList(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        List<MyLikedBoardsResponseForm> responseList = new ArrayList<>();
+        Set<Board> foundBoardSet = account.getLikedBoards();
+
+        for (Board board: foundBoardSet) {
+            responseList.add(new MyLikedBoardsResponseForm(board));
+        }
+        return responseList;
     }
 }

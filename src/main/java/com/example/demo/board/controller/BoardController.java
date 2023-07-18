@@ -103,6 +103,12 @@ public class BoardController {
         boardService.delete(boardId);
     }
 
+    @GetMapping("/{userToken}/my-liked-boards")
+    public List<MyLikedBoardsResponseForm> getMyLikedBoards(@PathVariable("userToken") String userToken) {
+        Long accountId = redisService.getValueByKey(userToken);
+        return boardService.getMyLikedBoardList(accountId);
+    }
+
 
     private void viewsCountUp(Long boardId, HttpServletRequest req, HttpServletResponse res){
         Cookie oldCookie = null;

@@ -19,4 +19,6 @@ public interface AccountService {
     Boolean checkDuplicateNickname(String nickname);
 
     AccountInfoResponseForm getAccountInfo(Long accountId);
+
+    Boolean checkPassword(Long accountId, String password);
 }

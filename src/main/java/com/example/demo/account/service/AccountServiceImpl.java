@@ -96,4 +96,15 @@ public class AccountServiceImpl implements AccountService{
         );
         return responseForm;
     }
+
+    @Override
+    public Boolean checkPassword(Long accountId, String password) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        if (account.getPassword().equals(password)) {
+            return true;
+        }
+        return false;
+    }
 }

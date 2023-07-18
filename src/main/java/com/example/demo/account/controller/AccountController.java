@@ -60,4 +60,10 @@ public class AccountController {
         Long accountId = redisService.getValueByKey(userToken);
         return accountService.getAccountInfo(accountId);
     }
+
+    @GetMapping("/{userToken}/check-password")
+    public Boolean checkPassword(@PathVariable("userToken") String userToken, @RequestParam("password") String password) {
+        Long accountId = redisService.getValueByKey(userToken);
+        return accountService.checkPassword(accountId, password);
+    }
 }

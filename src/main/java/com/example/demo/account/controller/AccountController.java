@@ -70,4 +70,10 @@ public class AccountController {
         String newNickname = requestForm.getNewNickname();
         accountService.changeNickname(accountId, newNickname);
     }
+
+    @PutMapping("/{userToken}/change-password")
+    public Boolean changePassword(@PathVariable("userToken") String userToken, @RequestBody ChangePasswordRequestForm requestForm) {
+        Long accountId = redisService.getValueByKey(userToken);
+        return accountService.changePassword(accountId, requestForm);
+    }
 }

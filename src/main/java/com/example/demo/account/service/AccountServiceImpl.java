@@ -3,6 +3,7 @@ package com.example.demo.account.service;
 import com.example.demo.account.controller.form.AccountInfoResponseForm;
 import com.example.demo.account.controller.form.AccountLoginRequestForm;
 import com.example.demo.account.controller.form.AccountRegisterForm;
+import com.example.demo.account.controller.form.ChangePasswordRequestForm;
 import com.example.demo.account.entity.Account;
 import com.example.demo.account.repository.AccountRepository;
 import com.example.demo.account.service.request.AccountRegisterRequest;
@@ -114,5 +115,18 @@ public class AccountServiceImpl implements AccountService{
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
         account.setNickname(newNickname);
         accountRepository.save(account);
+    }
+
+    @Override
+    public Boolean changePassword(Long accountId, ChangePasswordRequestForm requestForm) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        if (account.getPassword().equals(requestForm.getPassword())) {
+            account.setPassword(requestForm.getNewPassword());
+            accountRepository.save(account);
+            return true;
+        }
+        return false;
     }
 }

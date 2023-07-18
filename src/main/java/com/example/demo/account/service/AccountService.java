@@ -2,6 +2,7 @@ package com.example.demo.account.service;
 
 import com.example.demo.account.controller.form.AccountInfoResponseForm;
 import com.example.demo.account.controller.form.AccountLoginRequestForm;
+import com.example.demo.account.controller.form.ChangePasswordRequestForm;
 import com.example.demo.account.entity.Account;
 import com.example.demo.account.service.request.AccountRegisterRequest;
 
@@ -23,4 +24,6 @@ public interface AccountService {
     Boolean checkPassword(Long accountId, String password);
 
     void changeNickname(Long accountId, String newNickname);
+
+    Boolean changePassword(Long accountId, ChangePasswordRequestForm requestForm);
 }

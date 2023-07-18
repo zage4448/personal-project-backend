@@ -21,6 +21,7 @@ public class Account {
     private Long accountId;
 
     private String email;
+    @Setter
     private String password;
     @Setter
     private String nickname;

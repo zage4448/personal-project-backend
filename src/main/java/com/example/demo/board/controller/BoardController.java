@@ -87,6 +87,12 @@ public class BoardController {
         return boardService.isBoardLiked(boardId, accountId);
     }
 
+    @GetMapping("/{userToken}/my-boards")
+    public List<MyBoardsResponseForm> getMyBoards(@PathVariable("userToken") String userToken) {
+        Long accountId = redisService.getValueByKey(userToken);
+        return boardService.getMyBoardList(accountId);
+    }
+
 
     private void viewsCountUp(Long boardId, HttpServletRequest req, HttpServletResponse res){
         Cookie oldCookie = null;

@@ -29,4 +29,6 @@ public interface BoardService {
     Boolean unlikeBoard(Long boardId, Long accountId);
 
     Boolean isBoardLiked(Long boardId, Long accountId);
+
+    List<MyBoardsResponseForm> getMyBoardList(Long accountId);
 }

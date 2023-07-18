@@ -1,5 +1,6 @@
 package com.example.demo.board.repository;
 
+import com.example.demo.account.entity.Account;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import jakarta.persistence.criteria.Predicate;
@@ -40,4 +41,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("SELECT b FROM Board b ORDER BY b.createDate DESC")
     List<Board> findRecentBoards();
+
+    @Query("SELECT b FROM Board b WHERE b.writer = :account ORDER BY b.createDate DESC")
+    List<Board> findAllByAccount(Account account);
 }

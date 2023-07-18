@@ -183,4 +183,18 @@ public class BoardServiceImpl implements BoardService{
         }
         return false;
     }
+
+    @Override
+    public List<MyBoardsResponseForm> getMyBoardList(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        List<MyBoardsResponseForm> responseList = new ArrayList<>();
+        List<Board> foundBoardList = boardRepository.findAllByAccount(account);
+
+        for (Board board: foundBoardList) {
+            responseList.add(new MyBoardsResponseForm(board));
+        }
+        return responseList;
+    }
 }

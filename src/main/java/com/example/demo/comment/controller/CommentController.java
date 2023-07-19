@@ -29,4 +29,9 @@ public class CommentController {
     public List<CommentListResponseForm> getAllCommentsWithNicknameByBoardId(@PathVariable Long boardId) {
         return commentService.getAllCommentsWithNicknameByBoardId(boardId);
     }
+
+    @DeleteMapping("/{commentId}/delete")
+    public void deleteComment (@PathVariable Long boardId, @PathVariable Long commentId) {
+        commentService.delete(commentId);
+    }
 }

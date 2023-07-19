@@ -8,4 +8,6 @@ public interface CommentService {
     void addComment(Long boardId, String comment, Long accountId);
 
     List<CommentListResponseForm> getAllCommentsWithNicknameByBoardId(Long boardId);
+
+    void delete(Long commentId);
 }

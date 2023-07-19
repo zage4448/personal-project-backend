@@ -13,7 +13,7 @@ public interface AccountService {
 
     Boolean checkDuplicateEmail(String email);
 
-    Long login(AccountLoginRequestForm loginForm);
+    Account login(AccountLoginRequestForm loginForm);
 
     Account findAccountById(Long accountId);
 

@@ -1,6 +1,7 @@
 package com.example.demo.account.controller;
 
 import com.example.demo.account.controller.form.*;
+import com.example.demo.account.entity.Account;
 import com.example.demo.account.service.AccountService;
 import com.example.demo.redis.service.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +30,14 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public AccountCommunicationRequestForm accountLogin (@RequestBody AccountLoginRequestForm requestForm) {
-        Long accountId = accountService.login(requestForm);
-        if (accountId != null) {
+    public AccountLoginResponseForm accountLogin (@RequestBody AccountLoginRequestForm requestForm) {
+        Account account = accountService.login(requestForm);
+        if (account != null) {
             UUID userToken = UUID.randomUUID();
 
-            redisService.setKeyAndValue(userToken.toString(), accountId);
+            redisService.setKeyAndValue(userToken.toString(), account.getAccountId());
 
-            return new AccountCommunicationRequestForm(userToken.toString());
+            return new AccountLoginResponseForm(userToken.toString(), account.getNickname());
         }
         return null;
     }

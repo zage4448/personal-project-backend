@@ -52,7 +52,7 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public Long login(AccountLoginRequestForm loginForm) {
+    public Account login(AccountLoginRequestForm loginForm) {
         Optional<Account> maybeAccount = accountRepository.findByEmail(loginForm.getEmail());
 
         if(maybeAccount.isEmpty()){
@@ -64,7 +64,7 @@ public class AccountServiceImpl implements AccountService{
 
         if(account.getPassword().equals(loginForm.getPassword())){
 
-            return account.getAccountId();
+            return account;
         }
 
         log.info("존재하지 않는 아이디입니다.");

@@ -18,4 +18,8 @@ public class SearchBoardListResponseForm {
     final private String content;
     final private Date createDate;
     final private BoardCategory category;
+    final private int likeCount;
+    final private int viewCount;
+    final private int commentCount;
+    final private String thumbNailName;
 }

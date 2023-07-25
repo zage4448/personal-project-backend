@@ -222,6 +222,8 @@ public class BoardServiceImpl implements BoardService{
 
         board.setTitle(requestForm.getTitle());
         board.setContent(requestForm.getContent().replace("\n", "<br>"));
+        board.setThumbNailName(requestForm.getNewThumbNailName());
+        board.setImageNameList(requestForm.getNewImageNameList());
 
         boardRepository.save(board);
     }

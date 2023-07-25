@@ -59,11 +59,19 @@ public class BoardServiceImpl implements BoardService{
 
         List<CategoryBoardListResponseForm> categoryBoardList = new ArrayList<>();
         for (Board board: boardList) {
+            int maxLength = 10;
+            String content;
+
+            if (board.getContent().length() > maxLength) {
+                content = board.getContent().substring(0, maxLength) + "...";
+            } else {
+                content = board.getContent() + "...";
+            }
             categoryBoardList.add(
                     new CategoryBoardListResponseForm(
                             board.getBoardId(), board.getTitle(), board.getWriter().getNickname(),
-                            Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant())
-                    )
+                            Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant()),
+                            board.getLikes().size(), board.getViews(), board.getComments().size(), board.getThumbNailName(), content)
             );
         }
         return categoryBoardList;

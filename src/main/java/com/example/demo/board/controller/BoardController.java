@@ -109,6 +109,11 @@ public class BoardController {
         return boardService.getMyLikedBoardList(accountId);
     }
 
+    @GetMapping("/{boardId}/for-modify")
+    public BoardReadForModifyResponseForm getBoardForModify(@PathVariable("boardId") Long boardId) {
+        return boardService.readForModify(boardId);
+    }
+
 
     private void viewsCountUp(Long boardId, HttpServletRequest req, HttpServletResponse res){
         Cookie oldCookie = null;

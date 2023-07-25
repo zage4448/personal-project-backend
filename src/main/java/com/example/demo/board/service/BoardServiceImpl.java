@@ -249,4 +249,12 @@ public class BoardServiceImpl implements BoardService{
         }
         return responseList;
     }
+
+    @Override
+    public BoardReadForModifyResponseForm readForModify(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+        return new BoardReadForModifyResponseForm(board);
+    }
 }

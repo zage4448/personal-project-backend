@@ -47,7 +47,8 @@ public class BoardServiceImpl implements BoardService{
                                         board.getBoardCategory(),
                                         board.getViews(),
                                         board.getLikes().size(),
-                                        board.getComments().stream().distinct().collect(Collectors.toList()).size());
+                                        board.getComments().stream().distinct().collect(Collectors.toList()).size(),
+                                        board.getImageNameList());
         }
         return null;
     }

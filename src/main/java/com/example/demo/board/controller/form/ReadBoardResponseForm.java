@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -19,4 +20,5 @@ public class ReadBoardResponseForm {
     final private int views;
     final private int likeCount;
     final private int commentCount;
+    final private List<String> imageNameList;
 }

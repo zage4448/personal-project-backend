@@ -17,4 +17,9 @@ public class RecentBoardListResponseForm {
     final private String writer;
     final private BoardCategory category;
     final private Date createDate;
+    final private int likeCount;
+    final private int viewCount;
+    final private int commentCount;
+    final private String thumbNailName;
+    final private String content;
 }

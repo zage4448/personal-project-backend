@@ -47,7 +47,7 @@ public class BoardController {
     public Long registerBoard (@RequestBody BoardRegisterForm registerForm) {
         Long accountId = redisService.getValueByKey(registerForm.getUserToken());
         Account account = accountService.findAccountById(accountId);
-        return boardService.register(new BoardRegisterRequest(registerForm.getTitle(), account, registerForm.getContent(), registerForm.getCategory()));
+        return boardService.register(new BoardRegisterRequest(registerForm.getTitle(), account, registerForm.getContent(), registerForm.getCategory(), registerForm.getThumbNailName(), registerForm.getImageNameList()));
     }
 
     @GetMapping("/list/search/{searchKeyword}")

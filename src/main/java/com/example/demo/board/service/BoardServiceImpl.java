@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -46,7 +47,7 @@ public class BoardServiceImpl implements BoardService{
                                         board.getBoardCategory(),
                                         board.getViews(),
                                         board.getLikes().size(),
-                                        board.getComments().size());
+                                        board.getComments().stream().distinct().collect(Collectors.toList()).size());
         }
         return null;
     }

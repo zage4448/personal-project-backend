@@ -38,11 +38,19 @@ public class Board {
     @Enumerated(EnumType.STRING)
     private BoardCategory boardCategory;
 
-    public Board(String title, Account writer, String content, BoardCategory boardCategory) {
+    @Setter
+    private String thumbNailName;
+
+    @Setter
+    private List<String> imageNameList;
+
+    public Board(String title, Account writer, String content, BoardCategory boardCategory, String thumbNailName, List<String> imageNameList) {
         this.title = title;
         this.writer = writer;
         this.content = content;
         this.boardCategory = boardCategory;
+        this.thumbNailName = thumbNailName;
+        this.imageNameList = imageNameList;
     }
 
     @Setter

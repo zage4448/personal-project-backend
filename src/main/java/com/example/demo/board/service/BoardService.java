@@ -20,7 +20,7 @@ public interface BoardService {
 
     Integer updateViews(Long boardId);
 
-    List<SearchBoardListResponseForm> searchBoards(String searchKeyword);
+    Page<BoardListWithCategoryResponseForm> searchBoards(String searchKeyword, Pageable pageable);
 
     List<RelatedBoardResponseForm> getRelatedBoardList(Long boardId);
 

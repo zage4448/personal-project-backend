@@ -59,8 +59,11 @@ public class BoardController {
     }
 
     @GetMapping("/list/search/{searchKeyword}")
-    public List<SearchBoardListResponseForm> searchBoards (@PathVariable("searchKeyword") String searchKeyword) {
-        return boardService.searchBoards(searchKeyword);
+    public Page<BoardListWithCategoryResponseForm> searchBoards (@PathVariable("searchKeyword") String searchKeyword,
+                                                                 @RequestParam(defaultValue = "0") int currentPage,
+                                                                 @RequestParam(defaultValue = "8") int pageSize) {
+        Pageable pageable = PageRequest.of(currentPage, pageSize);
+        return boardService.searchBoards(searchKeyword, pageable);
     }
 
     @GetMapping("/list/related-board/{boardId}")

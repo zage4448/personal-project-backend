@@ -35,7 +35,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "OR b.content LIKE CONCAT('%', :keyword, '%') " +
             "OR b.writer.nickname LIKE CONCAT('%', :keyword, '%') " +
             "ORDER BY b.views DESC")
-    List<Board> findByKeywordSorted(@Param("keyword") String keyword);
+    Page<Board> findByKeywordSorted(@Param("keyword") String keyword, Pageable pageable);
 
     @Query("SELECT b FROM Board b WHERE b.boardCategory = :boardCategory AND b.boardId <> :boardId ORDER BY b.createDate DESC")
     List<Board> findRelatedBoardsByCategoryAndBoardIdNot(BoardCategory boardCategory, Long boardId, Pageable pageable);

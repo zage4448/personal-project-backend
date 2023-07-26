@@ -75,19 +75,10 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<SearchBoardListResponseForm> searchBoards(String searchKeyword) {
-        List<Board> searchedBoardList = boardRepository.findByKeywordSorted(searchKeyword);
-        List<SearchBoardListResponseForm> responseFormList = new ArrayList<>();
-        for (Board board: searchedBoardList) {
-            responseFormList.add(
-                    new SearchBoardListResponseForm(
-                            board.getBoardId(), board.getTitle(), board.getWriter().getNickname(), board.getContent().replace("<br>", "\n"),
-                            Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant()), board.getBoardCategory(),
-                            board.getLikes().size(), board.getViews(), board.getComments().size(), board.getThumbNailName()
-                    )
-            );
-        }
-        return responseFormList;
+    public Page<BoardListWithCategoryResponseForm> searchBoards(String searchKeyword, Pageable pageable) {
+        Page<Board> searchedBoardList = boardRepository.findByKeywordSorted(searchKeyword, pageable);
+        log.info("searched boards" + searchedBoardList.getTotalElements());
+        return searchedBoardList.map(this::convertToBoardListWithCategoryResponseForm);
     }
 
     @Override
@@ -247,5 +238,9 @@ public class BoardServiceImpl implements BoardService{
 
     private CategoryBoardListResponseForm convertToCategoryBoardListResponseForm(Board board) {
         return new CategoryBoardListResponseForm(board);
+    }
+
+    private BoardListWithCategoryResponseForm convertToBoardListWithCategoryResponseForm(Board board) {
+        return new BoardListWithCategoryResponseForm(board);
     }
 }

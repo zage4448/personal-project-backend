@@ -72,8 +72,10 @@ public class BoardController {
     }
 
     @GetMapping("/list/recent")
-    public List<RecentBoardListResponseForm> getRecentList () {
-        return boardService.getRecentBoardList();
+    public Page<BoardListWithCategoryResponseForm> getRecentList (@RequestParam(defaultValue = "0") int currentPage,
+                                                                  @RequestParam(defaultValue = "8") int pageSize) {
+        Pageable pageable = PageRequest.of(currentPage, pageSize);
+        return boardService.getRecentBoardList(pageable);
     }
 
     @PostMapping("/likeBoard")

@@ -58,7 +58,6 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public Page<CategoryBoardListResponseForm> getListByCategory(BoardCategory category, Pageable pageable) {
         Page<Board> boardList = boardRepository.findAllByCategory(category, pageable);
-        log.info("리스트" + boardList);
         return boardList.map(this::convertToCategoryBoardListResponseForm);
     }
 
@@ -77,7 +76,6 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public Page<BoardListWithCategoryResponseForm> searchBoards(String searchKeyword, Pageable pageable) {
         Page<Board> searchedBoardList = boardRepository.findByKeywordSorted(searchKeyword, pageable);
-        log.info("searched boards" + searchedBoardList.getTotalElements());
         return searchedBoardList.map(this::convertToBoardListWithCategoryResponseForm);
     }
 
@@ -102,26 +100,9 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<RecentBoardListResponseForm> getRecentBoardList() {
-        List<Board> boardList = boardRepository.findRecentBoards();
-
-        List<RecentBoardListResponseForm> recentBoardList = new ArrayList<>();
-
-        for (Board board: boardList) {
-            int maxLength = 10;
-            String content;
-
-            if (board.getContent().length() > maxLength) {
-                content = board.getContent().substring(0, maxLength) + "...";
-            } else {
-                content = board.getContent() + "...";
-            }
-            recentBoardList.add(new RecentBoardListResponseForm(
-                    board.getBoardId(), board.getTitle(), board.getWriter().getNickname(), board.getBoardCategory(),
-                    Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant()),
-                    board.getLikes().size(), board.getViews(), board.getComments().size(), board.getThumbNailName(), content));
-        }
-        return recentBoardList;
+    public Page<BoardListWithCategoryResponseForm> getRecentBoardList(Pageable pageable) {
+        Page<Board> boardList = boardRepository.findRecentBoards(pageable);
+        return boardList.map(this::convertToBoardListWithCategoryResponseForm);
     }
 
     @Override

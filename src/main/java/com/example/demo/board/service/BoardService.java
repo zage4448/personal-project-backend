@@ -24,7 +24,7 @@ public interface BoardService {
 
     List<RelatedBoardResponseForm> getRelatedBoardList(Long boardId);
 
-    List<RecentBoardListResponseForm> getRecentBoardList();
+    Page<BoardListWithCategoryResponseForm> getRecentBoardList(Pageable pageable);
 
     Boolean likeBoard(Long boardId, Long accountId);
 

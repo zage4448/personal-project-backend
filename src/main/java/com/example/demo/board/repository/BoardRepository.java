@@ -41,7 +41,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findRelatedBoardsByCategoryAndBoardIdNot(BoardCategory boardCategory, Long boardId, Pageable pageable);
 
     @Query("SELECT b FROM Board b ORDER BY b.createDate DESC")
-    List<Board> findRecentBoards();
+    Page<Board> findRecentBoards(Pageable pageable);
 
     @Query("SELECT b FROM Board b WHERE b.writer = :account ORDER BY b.createDate DESC")
     List<Board> findAllByAccount(Account account);

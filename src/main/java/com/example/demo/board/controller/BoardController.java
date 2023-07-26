@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,10 +35,15 @@ public class BoardController {
     }
 
     @GetMapping("/list/{category}")
-    public List<CategoryBoardListResponseForm> categoryBoardList (@PathVariable("category") BoardCategory category) {
+    public Page<CategoryBoardListResponseForm> categoryBoardList(@PathVariable("category") BoardCategory category,
+                                                                 @RequestParam(defaultValue = "0") int currentPage,
+                                                                 @RequestParam(defaultValue = "8") int pageSize) {
 
-        return boardService.getListByCategory(category);
+        log.info("currentPage" + currentPage);
+        Pageable pageable = PageRequest.of(currentPage, pageSize);
+        return boardService.getListByCategory(category, pageable);
     }
+
 
     @GetMapping("/{boardId}")
     public ReadBoardResponseForm readBoard (@PathVariable("boardId") Long boardId, HttpServletRequest req, HttpServletResponse res) {

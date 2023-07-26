@@ -10,7 +10,9 @@ import com.example.demo.board.service.request.BoardRegisterRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -54,27 +56,10 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<CategoryBoardListResponseForm> getListByCategory(BoardCategory category) {
-        List<Board> boardList = boardRepository.findAllByCategory(category);
-
-        List<CategoryBoardListResponseForm> categoryBoardList = new ArrayList<>();
-        for (Board board: boardList) {
-            int maxLength = 10;
-            String content;
-
-            if (board.getContent().length() > maxLength) {
-                content = board.getContent().substring(0, maxLength) + "...";
-            } else {
-                content = board.getContent() + "...";
-            }
-            categoryBoardList.add(
-                    new CategoryBoardListResponseForm(
-                            board.getBoardId(), board.getTitle(), board.getWriter().getNickname(),
-                            Date.from(board.getCreateDate().atZone(ZoneId.systemDefault()).toInstant()),
-                            board.getLikes().size(), board.getViews(), board.getComments().size(), board.getThumbNailName(), content)
-            );
-        }
-        return categoryBoardList;
+    public Page<CategoryBoardListResponseForm> getListByCategory(BoardCategory category, Pageable pageable) {
+        Page<Board> boardList = boardRepository.findAllByCategory(category, pageable);
+        log.info("리스트" + boardList);
+        return boardList.map(this::convertToCategoryBoardListResponseForm);
     }
 
     @Override
@@ -256,5 +241,11 @@ public class BoardServiceImpl implements BoardService{
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
         return new BoardReadForModifyResponseForm(board);
+    }
+
+
+
+    private CategoryBoardListResponseForm convertToCategoryBoardListResponseForm(Board board) {
+        return new CategoryBoardListResponseForm(board);
     }
 }

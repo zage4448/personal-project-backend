@@ -4,6 +4,7 @@ import com.example.demo.account.entity.Account;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardCategory;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,7 +20,7 @@ import java.util.Set;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("SELECT b FROM Board b WHERE b.boardCategory = :category ORDER BY b.createDate DESC")
-    List<Board> findAllByCategory(@Param("category") BoardCategory category);
+    Page<Board> findAllByCategory(@Param("category") BoardCategory category, Pageable pageable);
 
     @Query("SELECT COUNT(b) FROM Board b WHERE b.boardCategory = :category")
     long findPostNumberByCategory(@Param("category") BoardCategory category);

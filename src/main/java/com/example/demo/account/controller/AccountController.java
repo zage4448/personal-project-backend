@@ -84,4 +84,11 @@ public class AccountController {
         accountService.deleteAccount(accountId);
         redisService.deleteByKey(userToken);
     }
+
+    @GetMapping("/{userToken}/get-email")
+    public String getEmailForSignout(@PathVariable("userToken") String userToken) {
+        Long accountId = redisService.getValueByKey(userToken);
+        Account account = accountService.findAccountById(accountId);
+        return account.getEmail();
+    }
 }

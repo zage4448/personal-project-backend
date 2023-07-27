@@ -23,7 +23,7 @@ public interface AccountService {
 
     Boolean checkPassword(Long accountId, String password);
 
-    void changeNickname(Long accountId, String newNickname);
+    String changeNickname(Long accountId, String newNickname);
 
     Boolean changePassword(Long accountId, ChangePasswordRequestForm requestForm);
 

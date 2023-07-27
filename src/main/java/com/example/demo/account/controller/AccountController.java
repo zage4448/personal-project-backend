@@ -66,10 +66,10 @@ public class AccountController {
     }
 
     @PutMapping("/{userToken}/change-nickname")
-    public void changeNickname(@PathVariable("userToken") String userToken, @RequestBody ChangeNicknameRequestForm requestForm) {
+    public String changeNickname(@PathVariable("userToken") String userToken, @RequestBody ChangeNicknameRequestForm requestForm) {
         Long accountId = redisService.getValueByKey(userToken);
         String newNickname = requestForm.getNewNickname();
-        accountService.changeNickname(accountId, newNickname);
+        return accountService.changeNickname(accountId, newNickname);
     }
 
     @PutMapping("/{userToken}/change-password")

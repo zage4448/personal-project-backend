@@ -78,6 +78,13 @@ public class BoardController {
         return boardService.getRecentBoardList(pageable);
     }
 
+    @GetMapping("/list/most-liked")
+    public Page<BoardListWithCategoryResponseForm> getMostLikedList (@RequestParam(defaultValue = "0") int currentPage,
+                                                                  @RequestParam(defaultValue = "8") int pageSize) {
+        Pageable pageable = PageRequest.of(currentPage, pageSize);
+        return boardService.getMostLikedBoardList(pageable);
+    }
+
     @PostMapping("/likeBoard")
     public void likeBoard (@RequestBody BoardLikeRequestForm requestForm) {
         Long accountId = redisService.getValueByKey(requestForm.getUserToken());

@@ -41,4 +41,6 @@ public interface BoardService {
     Page<BoardListWithCategoryResponseForm> getMyLikedBoardList(Long accountId, Pageable pageable);
 
     BoardReadForModifyResponseForm readForModify(Long boardId);
+
+    Page<BoardListWithCategoryResponseForm> getMostLikedBoardList(Pageable pageable);
 }

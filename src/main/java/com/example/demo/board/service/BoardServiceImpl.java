@@ -204,7 +204,11 @@ public class BoardServiceImpl implements BoardService{
         return new BoardReadForModifyResponseForm(board);
     }
 
-
+    @Override
+    public Page<BoardListWithCategoryResponseForm> getMostLikedBoardList(Pageable pageable) {
+        Page<Board> boardList = boardRepository.findMostLikedBoards(pageable);
+        return boardList.map(this::convertToBoardListWithCategoryResponseForm);
+    }
 
     private CategoryBoardListResponseForm convertToCategoryBoardListResponseForm(Board board) {
         return new CategoryBoardListResponseForm(board);

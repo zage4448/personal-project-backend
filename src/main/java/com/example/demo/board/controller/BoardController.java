@@ -101,9 +101,13 @@ public class BoardController {
     }
 
     @GetMapping("/{userToken}/my-boards")
-    public List<MyBoardsResponseForm> getMyBoards(@PathVariable("userToken") String userToken) {
+    public Page<MyBoardsResponseForm> getMyBoards(@PathVariable("userToken") String userToken,
+                                                  @RequestParam(defaultValue = "0") int currentPage,
+                                                  @RequestParam(defaultValue = "8") int pageSize) {
+
+        Pageable pageable = PageRequest.of(currentPage, pageSize);
         Long accountId = redisService.getValueByKey(userToken);
-        return boardService.getMyBoardList(accountId);
+        return boardService.getMyBoardList(accountId, pageable);
     }
 
     @PutMapping("/{boardId}/modify-board")

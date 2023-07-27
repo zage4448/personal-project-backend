@@ -66,7 +66,6 @@ public class BoardServiceImpl implements BoardService{
         List<CategoryListForm> categoryList = new ArrayList<>();
         for (BoardCategory category: BoardCategory.values()) {
             Long posts =  boardRepository.findPostNumberByCategory(category);
-            log.info("posts: " + posts);
             categoryList.add(
                     new CategoryListForm( category, posts));
         }
@@ -159,17 +158,12 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<MyBoardsResponseForm> getMyBoardList(Long accountId) {
+    public Page<MyBoardsResponseForm> getMyBoardList(Long accountId, Pageable pageable) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
-        List<MyBoardsResponseForm> responseList = new ArrayList<>();
-        List<Board> foundBoardList = boardRepository.findAllByAccount(account);
-
-        for (Board board: foundBoardList) {
-            responseList.add(new MyBoardsResponseForm(board));
-        }
-        return responseList;
+        Page<Board> foundBoardList = boardRepository.findAllByAccount(account, pageable);
+        return foundBoardList.map(this::convertToMyBoardsResponseForm);
     }
 
     @Override
@@ -223,5 +217,9 @@ public class BoardServiceImpl implements BoardService{
 
     private BoardListWithCategoryResponseForm convertToBoardListWithCategoryResponseForm(Board board) {
         return new BoardListWithCategoryResponseForm(board);
+    }
+
+    private MyBoardsResponseForm convertToMyBoardsResponseForm(Board board) {
+        return new MyBoardsResponseForm(board);
     }
 }

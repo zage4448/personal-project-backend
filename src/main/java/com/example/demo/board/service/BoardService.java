@@ -32,7 +32,7 @@ public interface BoardService {
 
     Boolean isBoardLiked(Long boardId, Long accountId);
 
-    List<MyBoardsResponseForm> getMyBoardList(Long accountId);
+    Page<MyBoardsResponseForm> getMyBoardList(Long accountId, Pageable pageable);
 
     void modify(Long boardId, BoardModifyRequestForm requestForm);
 

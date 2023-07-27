@@ -7,9 +7,12 @@ import com.example.demo.account.controller.form.ChangePasswordRequestForm;
 import com.example.demo.account.entity.Account;
 import com.example.demo.account.repository.AccountRepository;
 import com.example.demo.account.service.request.AccountRegisterRequest;
+import com.example.demo.config.SecurityConfig;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,9 +24,15 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService{
 
     final private AccountRepository accountRepository;
+    final private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public Boolean register(AccountRegisterRequest registerRequest) {
-        accountRepository.save(registerRequest.toAccount());
+        accountRepository.save(new Account(
+                registerRequest.getEmail(),
+                passwordEncoder.encode(registerRequest.getPassword()),
+                registerRequest.getNickname()));
+
         return true;
     }
 
@@ -56,7 +65,7 @@ public class AccountServiceImpl implements AccountService{
         Optional<Account> maybeAccount = accountRepository.findByEmail(loginForm.getEmail());
 
         if(maybeAccount.isEmpty()){
-            log.info("존재하지 않는 패스워드 입니다.");
+            log.info("존재하지 않는 이메일 입니다.");
             return null;
         }
 
@@ -67,7 +76,7 @@ public class AccountServiceImpl implements AccountService{
             return account;
         }
 
-        log.info("존재하지 않는 아이디입니다.");
+        log.info("존재하지 않는 계정입니다.");
         return null;
     }
 

@@ -71,7 +71,7 @@ public class AccountServiceImpl implements AccountService{
 
         Account account = maybeAccount.get();
 
-        if(account.getPassword().equals(loginForm.getPassword())){
+        if(passwordEncoder.matches(loginForm.getPassword(), account.getPassword())){
 
             return account;
         }

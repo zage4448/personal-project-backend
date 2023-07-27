@@ -188,17 +188,12 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<MyLikedBoardsResponseForm> getMyLikedBoardList(Long accountId) {
+    public Page<BoardListWithCategoryResponseForm> getMyLikedBoardList(Long accountId, Pageable pageable) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
-        List<MyLikedBoardsResponseForm> responseList = new ArrayList<>();
-        Set<Board> foundBoardSet = account.getLikedBoards();
-
-        for (Board board: foundBoardSet) {
-            responseList.add(new MyLikedBoardsResponseForm(board));
-        }
-        return responseList;
+        Page<Board> boardList = boardRepository.findAllByLikedAccount(account, pageable);
+        return boardList.map(this::convertToBoardListWithCategoryResponseForm);
     }
 
     @Override

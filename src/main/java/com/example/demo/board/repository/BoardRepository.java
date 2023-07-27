@@ -45,4 +45,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("SELECT b FROM Board b WHERE b.writer = :account ORDER BY b.createDate DESC")
     Page<Board> findAllByAccount(Account account, Pageable pageable);
+
+    @Query("SELECT b FROM Board b JOIN b.likes l WHERE l = :account ORDER BY SIZE(b.likes) DESC")
+    Page<Board> findAllByLikedAccount(Account account, Pageable pageable);
 }

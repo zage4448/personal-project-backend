@@ -121,9 +121,12 @@ public class BoardController {
     }
 
     @GetMapping("/{userToken}/my-liked-boards")
-    public List<MyLikedBoardsResponseForm> getMyLikedBoards(@PathVariable("userToken") String userToken) {
+    public Page<BoardListWithCategoryResponseForm> getMyLikedBoards(@PathVariable("userToken") String userToken,
+                                                                    @RequestParam(defaultValue = "0") int currentPage,
+                                                                    @RequestParam(defaultValue = "8") int pageSize) {
+        Pageable pageable = PageRequest.of(currentPage, pageSize);
         Long accountId = redisService.getValueByKey(userToken);
-        return boardService.getMyLikedBoardList(accountId);
+        return boardService.getMyLikedBoardList(accountId, pageable);
     }
 
     @GetMapping("/{boardId}/for-modify")

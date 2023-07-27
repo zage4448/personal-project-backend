@@ -112,7 +112,7 @@ public class AccountServiceImpl implements AccountService{
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
-        if (account.getPassword().equals(password)) {
+        if (passwordEncoder.matches(password, account.getPassword())) {
             return true;
         }
         return false;

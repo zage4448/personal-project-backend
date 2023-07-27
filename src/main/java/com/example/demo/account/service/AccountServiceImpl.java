@@ -132,8 +132,9 @@ public class AccountServiceImpl implements AccountService{
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
-        if (account.getPassword().equals(requestForm.getPassword())) {
-            account.setPassword(requestForm.getNewPassword());
+        if (passwordEncoder.matches(requestForm.getPassword(), account.getPassword())) {
+            String newPassword = passwordEncoder.encode(requestForm.getNewPassword());
+            account.setPassword(newPassword);
             accountRepository.save(account);
             return true;
         }

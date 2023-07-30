@@ -7,6 +7,10 @@ import com.example.demo.account.controller.form.ChangePasswordRequestForm;
 import com.example.demo.account.entity.Account;
 import com.example.demo.account.repository.AccountRepository;
 import com.example.demo.account.service.request.AccountRegisterRequest;
+import com.example.demo.board.entity.Board;
+import com.example.demo.board.repository.BoardRepository;
+import com.example.demo.comment.entity.Comment;
+import com.example.demo.comment.repository.CommentRepository;
 import com.example.demo.config.SecurityConfig;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -25,6 +30,8 @@ public class AccountServiceImpl implements AccountService{
 
     final private AccountRepository accountRepository;
     final private BCryptPasswordEncoder passwordEncoder;
+    final private CommentRepository commentRepository;
+    final private BoardRepository boardRepository;
 
     @Override
     public Boolean register(AccountRegisterRequest registerRequest) {
@@ -145,6 +152,21 @@ public class AccountServiceImpl implements AccountService{
     public void deleteAccount(Long accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        for (Board board : account.getLikedBoards()) {
+            board.removeLike(account);
+        }
+
+        List<Comment> commentList = commentRepository.findAllByAccount(account);
+        log.info("list: " + commentList);
+        for (Comment comment : commentList) {
+            Long boardId = comment.getBoard().getBoardId();
+            Board board = boardRepository.findById(boardId)
+                    .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+            board.getComments().remove(comment);
+            commentRepository.delete(comment);
+        }
 
         accountRepository.delete(account);
     }
